@@ -1,0 +1,22 @@
+SELECT 
+    cp.*,
+    rl.*
+FROM (
+    SELECT 
+        "ISO3166-1-Alpha-3" AS country_code,
+        name,
+        geometry
+    FROM "country_polys_3166_1"
+
+    UNION ALL
+
+    SELECT 
+        "ISO3166-2" AS country_code,
+        name,
+        geometry
+    FROM "country_polys_3166_2"
+) AS cp
+RIGHT JOIN 
+    "resources_lidar" AS rl
+ON cp.country_code = rl."country_code"
+

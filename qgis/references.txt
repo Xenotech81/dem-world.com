@@ -1,0 +1,3 @@
+Great Britain polys: https://geoportal.statistics.gov.uk/datasets/5175ac326fbd47b2ab0a0d6aee7e9c21_0/explore
+
+iso3166-2 polys (not used): https://www.volkerkrause.eu/2021/02/13/osm-country-subdivision-boundary-polygons.html
