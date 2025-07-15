@@ -36,8 +36,13 @@ jobs:
           exit 1
         fi
         lftp -d -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} -e "
+        set sftp:auto-confirm yes;
         set net:max-retries 3;
         set net:timeout 10;
+        set net:connection-timeout 10;
+        set ssl:verify-certificate no;
+        connect sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }};
+        ls;
         mirror -R --verbose html /maps/dem_world;
         bye
-        " -p ${{ secrets.SFTP_PORT }} sftp://${{ secrets.SFTP_HOST }}
+        "
