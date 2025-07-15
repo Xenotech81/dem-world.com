@@ -27,7 +27,7 @@ jobs:
 
     - name: Test SFTP Connection (list directory)
       run: |
-        lftp -d -e "ls" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
+        lftp -e "ls" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
 
     - name: Upload map via SFTP
       run: |
@@ -35,14 +35,10 @@ jobs:
           echo "Error: html directory not found"
           exit 1
         fi
-        lftp -d -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} -e "
+        lftp -d -e "
         set sftp:auto-confirm yes;
         set net:max-retries 3;
         set net:timeout 10;
-        set net:connection-timeout 10;
-        set ssl:verify-certificate no;
-        connect sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }};
-        ls;
         mirror -R --verbose html /maps/dem_world;
         bye
-        "
+        " -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
