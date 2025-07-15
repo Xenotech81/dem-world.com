@@ -20,19 +20,20 @@ jobs:
     - name: Install lftp
       run: sudo apt-get install lftp
   
-    - name: Confirm SFTP secrets
+    - name: Test SFTP Connection
       run: |
-        echo "Testing secrets..."
-        echo "SFTP_HOST: $MY_SFTP_HOST"
-        echo "SFTP_PORT: $MY_SFTP_PORT"
-      env:
-        MY_SFTP_HOST: ${{ secrets.SFTP_HOST }}
-        MY_SFTP_PORT: ${{ secrets.SFTP_PORT }}
+        lftp -e "exit" -p ${{ secrets.SFTP_PORT }} sftp://${{ secrets.SFTP_HOST }}
 
     - name: Upload map via SFTP
       run: |
-        lftp -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} -e "
+        if [ ! -d "html" ]; then
+          echo "Error: html directory not found"
+          exit 1
+        fi
+        lftp -d -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} -e "
         set sftp:auto-confirm yes;
-        mirror -R html /maps/dem_world/;
+        set net:max-retries 3;
+        set net:timeout 10;
+        mirror -R --verbose html /maps/dem_world/;
         bye
         " -p ${{ secrets.SFTP_PORT }} sftp://${{ secrets.SFTP_HOST }}
