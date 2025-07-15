@@ -35,12 +35,10 @@ jobs:
           echo "Error: html directory not found"
           exit 1
         fi
-        ls -l;
         lftp -d -e "
         set sftp:auto-confirm yes;
         set net:max-retries 3;
         set net:timeout 10;
-        ls /maps/dem_world;
+        ls -l /maps/dem_world;
         mirror -R --verbose html /maps/dem_world;
-        bye
-        " -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
+        bye" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
