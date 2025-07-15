@@ -19,6 +19,12 @@ jobs:
 
     - name: Install lftp
       run: sudo apt-get install lftp
+  
+    - name: Confirm SFTP secrets
+      run: |
+        echo "Host: ${{ secrets.SFTP_HOST }}"
+        echo "Port: ${{ secrets.SFTP_PORT }}"
+        echo "Username: ${{ secrets.SFTP_USERNAME }}"
 
     - name: Upload map via SFTP
       run: |
