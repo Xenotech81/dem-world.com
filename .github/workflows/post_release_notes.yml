@@ -16,9 +16,9 @@ jobs:
       steps:
       - name: Post as GitHubBot
         env:
-          WP_USER: ${{ WP_BOT_USER }}
+          WP_USER: ${{ vars.WP_BOT_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_BOT_PASSWORD }}
-          WP_URL: ${{ WP_URL }}
+          WP_URL: ${{ vars.WP_URL }}
         run: |
           TITLE="GitHub test"
           CONTENT="GitHubTest content"
