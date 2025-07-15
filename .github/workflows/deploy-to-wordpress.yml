@@ -22,9 +22,12 @@ jobs:
   
     - name: Confirm SFTP secrets
       run: |
-        echo "Host: ${{ secrets.SFTP_HOST }}"
-        echo "Port: ${{ secrets.SFTP_PORT }}"
-        echo "Username: ${{ secrets.SFTP_USERNAME }}"
+        echo "Testing secrets..."
+        echo "SFTP_HOST: $MY_SFTP_HOST"
+        echo "SFTP_PORT: $MY_SFTP_PORT"
+      env:
+        MY_SFTP_HOST: ${{ secrets.SFTP_HOST }}
+        MY_SFTP_PORT: ${{ secrets.SFTP_PORT }}
 
     - name: Upload map via SFTP
       run: |
