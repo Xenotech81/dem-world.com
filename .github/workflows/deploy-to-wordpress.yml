@@ -3,7 +3,12 @@ name: Deploy HTML Map to WordPress
 on:
   release:
     types: [published]
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment (optional)'
+        required: false
+        default: 'production'
 jobs:
   deploy:
     runs-on: ubuntu-latest
