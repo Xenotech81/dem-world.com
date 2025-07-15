@@ -1,0 +1,48 @@
+.map-release-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.map-release-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.map-release-card:hover {
+  transform: translateY(-4px);
+}
+
+.map-release-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-release-content {
+  padding: 1rem;
+}
+
+.map-release-title {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.map-release-title a {
+  color: #0073aa;
+  text-decoration: none;
+}
+
+.map-release-title a:hover {
+  text-decoration: underline;
+}
+
+.map-release-excerpt {
+  color: #555;
+  font-size: 0.95rem;
+}

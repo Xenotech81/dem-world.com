@@ -1,0 +1,12 @@
+{
+  "apiVersion": 2,
+  "name": "map-release/latest-maps",
+  "title": "Latest Map Releases",
+  "category": "widgets",
+  "icon": "location",
+  "description": "Display latest Map Release posts as cards",
+  "supports": {
+    "html": false
+  },
+  "editorScript": "map-release-block-script"
+}

@@ -28,7 +28,7 @@ jobs:
             --arg content "$CONTENT" \
             '{title: $title, content: $content, status: "publish"}')
       
-          curl -X POST "$WP_URL/wp-json/wp/v2/posts" \
+          curl -X POST "$WP_URL/wp-json/wp/v2/map_release" \
             -u "$WP_USER:$WP_APP_PASSWORD" \
             -H "Content-Type: application/json" \
             -d "$JSON"
