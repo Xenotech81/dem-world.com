@@ -1,4 +1,4 @@
-name: Deploy HTML Map to WordPress
+name: Mirror repo to WordPress
 
 on:
   release:
@@ -25,14 +25,14 @@ jobs:
         mkdir -p ~/.ssh
         ssh-keyscan -p ${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Test SFTP Connection (list directory)
+    - name: Test SFTP Connection (list root)
       run: |
-        lftp -e "ls -l /maps/dem_world" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
+        lftp -e "ls -l" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
 
-    - name: Upload map via SFTP
+    - name: Mirror map
       run: |
-        if [ ! -d "html" ]; then
-          echo "Error: html directory not found"
-          exit 1
-        fi
-        lftp -e "mirror -R --verbose html /maps/dem_world; bye" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
+        lftp -e "mirror -e -R --verbose html /maps/dem_world; bye" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
+
+    - name: Mirror plugins
+      run: |
+        lftp -e "mirror -R --verbose plugins /plugins; bye" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
