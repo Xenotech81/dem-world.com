@@ -1,0 +1,34 @@
+name: Post release notes to WordPress
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment (optional)'
+        required: false
+        default: 'production'
+jobs:
+    post_release_notes:
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Post as GitHubBot
+        env:
+          WP_USER: ${{ WP_BOT_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_BOT_PASSWORD }}
+          WP_URL: ${{ WP_URL }}
+        run: |
+          TITLE="GitHub test"
+          CONTENT="GitHubTest content"
+      
+          JSON=$(jq -n \
+            --arg title "$TITLE" \
+            --arg content "$CONTENT" \
+            '{title: $title, content: $content, status: "publish"}')
+      
+          curl -X POST "$WP_URL/wp-json/wp/v2/posts" \
+            -u "$WP_USER:$WP_APP_PASSWORD" \
+            -H "Content-Type: application/json" \
+            -d "$JSON"
