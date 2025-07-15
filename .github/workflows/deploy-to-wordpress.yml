@@ -19,7 +19,12 @@ jobs:
 
     - name: Install lftp
       run: sudo apt-get install lftp
-  
+
+    - name: Add host key to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -p ${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_HOST }} >> ~/.ssh/known_hosts
+
     - name: Test SFTP Connection (list directory)
       run: |
         lftp -d -e "ls" -p ${{ secrets.SFTP_PORT }} -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}
@@ -31,7 +36,6 @@ jobs:
           exit 1
         fi
         lftp -d -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} -e "
-        set sftp:auto-confirm yes;
         set net:max-retries 3;
         set net:timeout 10;
         mirror -R --verbose html /maps/dem_world;
