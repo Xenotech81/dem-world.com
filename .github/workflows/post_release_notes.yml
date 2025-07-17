@@ -5,28 +5,46 @@ on:
     types: [published]
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Target environment (optional)'
+      custom_title:
+        description: 'Post title'
         required: false
-        default: 'production'
+      custom_content:
+        description: 'Post content'
+        required: false
 jobs:
     post_release_notes:
       runs-on: ubuntu-latest
 
       steps:
+      - name: Determine post title and content
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            TITLE="${{ github.event.release.name }}"
+            CONTENT="${{ github.event.release.body }}"
+          else
+            TITLE="${{ github.event.inputs.custom_title || 'Manual Map Release' }}"
+            CONTENT="${{ github.event.inputs.custom_content || 'No release notes provided.' }}"
+          fi
+          
+          echo "TITLE<<EOF" >> $GITHUB_ENV
+          echo "$TITLE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      
+          echo "CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Post as GitHubBot
         env:
           WP_USER: ${{ vars.WP_BOT_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_BOT_PASSWORD }}
           WP_URL: ${{ vars.WP_URL }}
         run: |
-          TITLE="GitHub test"
-          CONTENT="GitHubTest content"
-      
+          CONTENT="${{ github.event.release.body }}"
           JSON=$(jq -n \
             --arg title "$TITLE" \
             --arg content "$CONTENT" \
-            '{title: $title, content: $content, status: "publish"}')
+            '{title: $title, content: $content, status: "publish", categories: [7], featured_media: 98 }')
       
           curl -X POST "$WP_URL/wp-json/wp/v2/posts" \
             -u "$WP_USER:$WP_APP_PASSWORD" \
