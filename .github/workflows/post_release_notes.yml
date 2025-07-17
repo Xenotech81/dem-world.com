@@ -20,13 +20,13 @@ jobs:
           WP_APP_PASSWORD: ${{ secrets.WP_BOT_PASSWORD }}
           WP_URL: ${{ vars.WP_URL }}
         run: |
-          TITLE="GitHub test"
-          CONTENT="GitHubTest content"
+          TITLE="GitHub test with categories"
+          CONTENT="GitHubTest content for category 'Map Release'"
       
           JSON=$(jq -n \
             --arg title "$TITLE" \
             --arg content "$CONTENT" \
-            '{title: $title, content: $content, status: "publish"}')
+            '{title: $title, content: $content, status: "publish", categories: [7]}')
       
           curl -X POST "$WP_URL/wp-json/wp/v2/posts" \
             -u "$WP_USER:$WP_APP_PASSWORD" \
