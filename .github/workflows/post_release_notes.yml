@@ -44,7 +44,7 @@ jobs:
           JSON=$(jq -n \
             --arg title "$TITLE" \
             --arg content "$CONTENT" \
-            '{title: $title, content: $content, status: "publish", categories: [7]}')
+            '{title: $title, content: $content, status: "publish", categories: [7], featured_media: 98 }')
       
           curl -X POST "$WP_URL/wp-json/wp/v2/posts" \
             -u "$WP_USER:$WP_APP_PASSWORD" \
