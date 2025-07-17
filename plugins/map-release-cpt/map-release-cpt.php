@@ -16,6 +16,7 @@ function register_map_release_cpt() {
         'supports' => ['title', 'editor', 'excerpt', 'thumbnail'],
         'menu_position' => 5,
         'menu_icon' => 'dashicons-location-alt',
+        'rewrite' => array('slug' => 'map_release'),
         'labels' => [
             'name' => 'Map Releases',
             'singular_name' => 'Map Release',
@@ -93,3 +94,10 @@ add_action('init', 'map_release_register_block');
 function map_release_block_render() {
     return do_shortcode('[map_releases]');
 }
+
+
+function map_release_activate() {
+    register_map_release_cpt(); // Register the custom post type
+    flush_rewrite_rules(); // Flush rewrite rules
+}
+register_activation_hook(__FILE__, 'map_release_activate');
