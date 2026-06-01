@@ -1,0 +1,2 @@
+country_code,subdivision,data_name,epsg,datum,resolution,resolution_unit,format,cost_model,download_link,product_link,license_link,wcs_link
+AUT,,"Digital Terrain Model 5m (BEV Shop PLUS, with registration)",,,5,meter,,3€/km²,https://portal.bev.gv.at/pls/portal/PORTAL.wwa_app_module.show?p_sessionid=680064,https://www.bev.gv.at/en/Services/Products/Remote-Sensing.html,https://www.bev.gv.at/dam/jcr:5d8bd721-b8f4-4207-a45b-09f42294f7cf/Standard_Charges_and_Licensing_Conditions_2022.pdf,
